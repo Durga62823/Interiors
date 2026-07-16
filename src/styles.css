@@ -1,97 +1,59 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-gold: var(--gold);
-  --color-gold-soft: var(--gold-soft);
-  --color-charcoal: var(--charcoal);
-  --color-cream: var(--cream);
-  --color-ink: var(--ink);
+@theme {
+  --color-ink: oklch(0.14 0.01 60);
+  --color-charcoal: oklch(0.24 0.008 60);
+  --color-cream: oklch(0.965 0.018 85);
+  --color-gold: oklch(0.78 0.13 80);
+  --color-gold-soft: oklch(0.86 0.09 85);
+  --color-background: var(--color-cream);
+  --color-foreground: var(--color-ink);
+  --color-card: oklch(0.99 0.008 85);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: oklch(0.99 0.008 85);
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-ink);
+  --color-primary-foreground: var(--color-cream);
+  --color-secondary: oklch(0.92 0.012 85);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: oklch(0.93 0.01 85);
+  --color-muted-foreground: oklch(0.45 0.012 70);
+  --color-accent: var(--color-gold);
+  --color-accent-foreground: var(--color-ink);
+  --color-destructive: oklch(0.55 0.2 27);
+  --color-destructive-foreground: var(--color-cream);
+  --color-border: oklch(0.88 0.012 80);
+  --color-input: oklch(0.88 0.012 80);
+  --color-ring: var(--color-gold);
+  --radius: 0.25rem;
   --font-display: "Playfair Display", serif;
-  --font-sans: "Inter", sans-serif;
 }
 
 :root {
-  --radius: 0.25rem;
-
-  /* Brand: Modern Luxury — Black, Charcoal, Gold, Warm Cream */
-  --ink: oklch(0.14 0.01 60);            /* near-black */
-  --charcoal: oklch(0.24 0.008 60);
-  --cream: oklch(0.965 0.018 85);        /* warm cream */
-  --gold: oklch(0.78 0.13 80);           /* warm gold */
-  --gold-soft: oklch(0.86 0.09 85);
-
-  --background: var(--cream);
-  --foreground: var(--ink);
-  --card: oklch(0.99 0.008 85);
-  --card-foreground: var(--ink);
-  --popover: oklch(0.99 0.008 85);
-  --popover-foreground: var(--ink);
-  --primary: var(--ink);
-  --primary-foreground: var(--cream);
-  --secondary: oklch(0.92 0.012 85);
-  --secondary-foreground: var(--ink);
-  --muted: oklch(0.93 0.01 85);
-  --muted-foreground: oklch(0.45 0.012 70);
-  --accent: var(--gold);
-  --accent-foreground: var(--ink);
-  --destructive: oklch(0.55 0.2 27);
-  --destructive-foreground: var(--cream);
-  --border: oklch(0.88 0.012 80);
-  --input: oklch(0.88 0.012 80);
-  --ring: var(--gold);
-
-  --gradient-gold: linear-gradient(135deg, var(--gold) 0%, var(--gold-soft) 100%);
+  --gradient-gold: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-soft) 100%);
   --gradient-ink: linear-gradient(180deg, oklch(0.14 0.01 60 / 0) 0%, oklch(0.08 0.01 60 / 0.85) 100%);
   --shadow-luxe: 0 30px 60px -20px oklch(0.14 0.01 60 / 0.35);
   --shadow-soft: 0 10px 30px -15px oklch(0.14 0.01 60 / 0.25);
 }
 
 .dark {
-  --background: var(--ink);
-  --foreground: var(--cream);
-  --card: var(--charcoal);
-  --card-foreground: var(--cream);
-  --popover: var(--charcoal);
-  --popover-foreground: var(--cream);
-  --primary: var(--gold);
-  --primary-foreground: var(--ink);
-  --secondary: oklch(0.28 0.01 60);
-  --secondary-foreground: var(--cream);
-  --muted: oklch(0.22 0.008 60);
-  --muted-foreground: oklch(0.7 0.02 80);
-  --accent: var(--gold);
-  --accent-foreground: var(--ink);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: var(--gold);
+  --color-background: var(--color-ink);
+  --color-foreground: var(--color-cream);
+  --color-card: var(--color-charcoal);
+  --color-card-foreground: var(--color-cream);
+  --color-popover: var(--color-charcoal);
+  --color-popover-foreground: var(--color-cream);
+  --color-primary: var(--color-gold);
+  --color-primary-foreground: var(--color-ink);
+  --color-secondary: oklch(0.28 0.01 60);
+  --color-secondary-foreground: var(--color-cream);
+  --color-muted: oklch(0.22 0.008 60);
+  --color-muted-foreground: oklch(0.7 0.02 80);
+  --color-accent: var(--color-gold);
+  --color-accent-foreground: var(--color-ink);
+  --color-border: oklch(1 0 0 / 10%);
+  --color-input: oklch(1 0 0 / 15%);
+  --color-ring: var(--color-gold);
 }
 
 @layer base {
@@ -100,32 +62,39 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-sans);
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4, .font-display {
-    font-family: var(--font-display);
+    font-family: "Playfair Display", serif;
     letter-spacing: -0.01em;
   }
 }
 
-@utility container-luxe {
+.container-luxe {
   width: 100%;
-  margin-inline: auto;
-  padding-inline: 1.25rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
   max-width: 80rem;
-  @media (min-width: 768px) { padding-inline: 2rem; }
+}
+@media (min-width: 768px) {
+  .container-luxe {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
-@utility text-gold-gradient {
+.text-gold-gradient {
   background: var(--gradient-gold);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-@utility hairline {
+.hairline {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
+  background: linear-gradient(90deg, transparent, var(--color-gold) 50%, transparent);
 }

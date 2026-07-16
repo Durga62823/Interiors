@@ -47,8 +47,8 @@ function Portfolio() {
           {projects.map((p) => (
             <figure key={p.title} className={`group overflow-hidden rounded-sm bg-card ${p.span}`}>
               <div className="relative h-full w-full overflow-hidden">
-                <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
+                <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-1200 ease-out group-hover:scale-105" />
+                <div className="absolute inset-0 bg-linear-to-t from-ink/85 via-ink/10 to-transparent" />
                 <figcaption className="absolute inset-x-0 bottom-0 p-6 text-cream">
                   <h3 className="font-display text-2xl">{p.title}</h3>
                   <p className="mt-1 text-[11px] uppercase tracking-[0.25em] text-cream/70">{p.tag}</p>

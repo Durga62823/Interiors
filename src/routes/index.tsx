@@ -8,19 +8,21 @@ import wardrobeImg from "@/assets/portfolio-wardrobe.jpg";
 import ceilingImg from "@/assets/portfolio-ceiling.jpg";
 import { SiteLayout } from "@/components/SiteLayout";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "NSS Home Designs — Interiors & Woodwork" },
-      { name: "description", content: "NSS Home Designs — interior design, modular furniture, modular kitchens, doors & woodwork, and complete home solutions." },
-      { property: "og:title", content: "NSS Home Designs — Interiors & Woodwork" },
-      { property: "og:description", content: "Designing Dreams, Building Better Homes." },
-      { property: "og:image", content: heroImg },
-      { name: "twitter:image", content: heroImg },
-    ],
-  }),
-  component: Home,
-});
+export const Route = createFileRoute("/")(
+  {
+    head: () => ({
+      meta: [
+        { title: "NSS Home Designs — Interiors & Woodwork" },
+        { name: "description", content: "NSS Home Designs — interior design, modular furniture, modular kitchens, doors & woodwork, and complete home solutions." },
+        { property: "og:title", content: "NSS Home Designs — Interiors & Woodwork" },
+        { property: "og:description", content: "Designing Dreams, Building Better Homes." },
+        { property: "og:image", content: heroImg },
+        { name: "twitter:image", content: heroImg },
+      ],
+    }),
+    component: Home,
+  },
+);
 
 const services = [
   { icon: PencilRuler, title: "Interior Design", desc: "Considered residential interiors tailored to how you live." },
@@ -64,7 +66,7 @@ function Home() {
           className="absolute inset-0 h-full w-full object-cover opacity-70"
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,oklch(0.08_0.01_60/0.55)_0%,oklch(0.08_0.01_60/0.4)_40%,oklch(0.08_0.01_60/0.9)_100%)]" />
-        <div className="relative z-10 container-luxe flex min-h-[100svh] flex-col justify-end pb-16 pt-32 md:pb-24 md:pt-40">
+        <div className="relative z-10 container-luxe flex min-h-svh flex-col justify-end pb-16 pt-32 md:pb-24 md:pt-40">
           <p className="text-[11px] uppercase tracking-[0.4em] text-gold">NSS Home Designs · Interiors & Woodwork</p>
           <h1 className="mt-6 max-w-4xl font-display text-5xl leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl">
             Designing dreams, <span className="italic text-gold-gradient">building better homes</span>.
