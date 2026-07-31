@@ -4,13 +4,15 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
-  HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect } from "react";
 
-import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+
+import { Toaster } from '@/components/ui/sonner';
+import { useSettings } from '@/hooks/use-settings';
+import { applySeo } from '@/lib/seo';
+import { captureUTM } from '@/lib/utm';
+import { loadGA4, trackPageView } from '@/lib/analytics';
 
 function NotFoundComponent() {
   return (
@@ -42,20 +44,26 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="font-display text-3xl text-foreground">Something went wrong</h1>
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-8">
+      <div className="max-w-2xl text-left bg-card p-8 rounded-lg border border-border shadow-lg">
+        <h1 className="font-display text-3xl text-destructive font-semibold">Something went wrong</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Please refresh or head back home.
+          An error occurred while rendering this page:
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-3">
+        <div className="mt-4 p-4 bg-muted rounded-md overflow-auto max-h-96">
+          <p className="font-mono text-sm font-semibold text-foreground">{error.message || String(error)}</p>
+          {error.stack && (
+            <pre className="mt-2 font-mono text-xs text-muted-foreground whitespace-pre-wrap">{error.stack}</pre>
+          )}
+        </div>
+        <div className="mt-6 flex flex-wrap gap-3">
           <button
             onClick={() => { router.invalidate(); reset(); }}
-            className="rounded-sm bg-primary px-5 py-2.5 text-xs uppercase tracking-[0.2em] text-primary-foreground hover:bg-foreground"
+            className="rounded-sm bg-primary px-5 py-2.5 text-xs uppercase tracking-[0.2em] text-primary-foreground hover:bg-foreground transition-colors"
           >
             Try again
           </button>
-          <a href="/" className="rounded-sm border border-border px-5 py-2.5 text-xs uppercase tracking-[0.2em] hover:bg-secondary">
+          <a href="/" className="rounded-sm border border-border px-5 py-2.5 text-xs uppercase tracking-[0.2em] hover:bg-secondary transition-colors text-foreground">
             Go home
           </a>
         </div>
@@ -65,55 +73,64 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "NSS Home Designs — Interiors & Woodwork" },
-      { name: "description", content: "NSS Home Designs — interior design, modular furniture, modular kitchens, doors & woodwork, and complete home solutions. Designing Dreams, Building Better Homes." },
-      { name: "author", content: "NSS Home Designs" },
-      { property: "og:title", content: "NSS Home Designs — Interiors & Woodwork" },
-      { property: "og:description", content: "Interior design, modular furniture & kitchens, doors and complete home solutions." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "NSS Home Designs — Interiors & Woodwork" },
-      { name: "twitter:description", content: "Interior design, modular furniture & kitchens, doors and complete home solutions." },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap",
-      },
-    ],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
+function GlobalSeoInjector() {
+  const { data: settings } = useSettings();
+  const router = useRouter();
+
+  // Capture UTM params from the URL on every page load.
+  // Stores to sessionStorage so they survive navigation within the session.
+  useEffect(() => {
+    captureUTM();
+  }, []);
+
+  // Load GA4 once when the measurement ID is available from settings.
+  // loadGA4() is idempotent — safe to call multiple times.
+  useEffect(() => {
+    const id = settings?.ga4MeasurementId;
+    if (id) loadGA4(id);
+  }, [settings?.ga4MeasurementId]);
+
+  // Fire page_view on every client-side route change.
+  // We use router.subscribe() so it works correctly with TanStack Router's
+  // navigation model (history push, replace, back, forward).
+  useEffect(() => {
+    const unsubscribe = router.subscribe('onLoad', ({ toLocation }) => {
+      trackPageView(toLocation.pathname);
+    });
+    return unsubscribe;
+  }, [router]);
+
+  // Apply global/fallback SEO from company_settings.
+  // Individual pages can override this with their own useEffect.
+  useEffect(() => {
+    if (!settings) return;
+    const seo = settings.seo || {};
+    const companyName = settings.companyName || 'NSS Home Designs';
+    applySeo({
+      title: seo.metaTitle || companyName,
+      description: seo.metaDescription || '',
+      ogTitle: seo.ogTitle || seo.metaTitle || companyName,
+      ogDescription: seo.ogDescription || seo.metaDescription || '',
+      ogImage: seo.ogImage || '',
+      twitterCard: seo.twitterCard || 'summary_large_image',
+    });
+  }, [settings]);
+
+  return null;
 }
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
+      <GlobalSeoInjector />
       <Outlet />
+      <Toaster />
     </QueryClientProvider>
   );
 }

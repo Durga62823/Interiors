@@ -1,22 +1,29 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ArrowRight } from "lucide-react";
+import { useEffect } from "react";
 import bedroomImg from "@/assets/portfolio-bedroom.jpg";
 import officeImg from "@/assets/portfolio-office.jpg";
+import { useSettings } from "@/hooks/use-settings";
+import { applySeo } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — NSS Home Designs" },
-      { name: "description", content: "Meet NSS Home Designs — a Bengaluru-based design studio crafting modern luxury homes and workspaces." },
-      { property: "og:title", content: "About — NSS Home Designs" },
-      { property: "og:description", content: "A Bengaluru design studio crafting modern luxury interiors." },
-    ],
-  }),
   component: About,
 });
 
 function About() {
+  const { data: settings } = useSettings();
+
+  useEffect(() => {
+    const companyName = settings?.companyName || 'NSS Home Designs';
+    applySeo({
+      title: `About Us — ${companyName}`,
+      description: `Learn about ${companyName}, a Bengaluru-based interior design studio crafting premium residential and commercial spaces.`,
+      ogTitle: `About ${companyName}`,
+      ogDescription: 'A young studio with a timeless point of view. Interiors built to last.',
+    });
+  }, [settings]);
+
   return (
     <SiteLayout>
       <section className="container-luxe pt-36 pb-16 md:pt-44 md:pb-24">

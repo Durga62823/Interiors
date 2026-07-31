@@ -1,22 +1,67 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Mail, Phone, MapPin, MessageCircle, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createLead } from "@/mock-api/leads";
+import { toast } from "sonner";
+import { useSettings } from "@/hooks/use-settings";
+import { applySeo } from "@/lib/seo";
+import { getStoredUTM } from "@/lib/utm";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — NSS Home Designs Bengaluru" },
-      { name: "description", content: "Book a free consultation with NSS Home Designs — premium interior designers in Bengaluru." },
-      { property: "og:title", content: "Contact — NSS Home Designs" },
-      { property: "og:description", content: "Book a free consultation with our Bengaluru design studio." },
-    ],
-  }),
   component: Contact,
 });
 
 function Contact() {
   const [sent, setSent] = useState(false);
+  const { data: settings } = useSettings();
+
+  // Page-specific SEO — overrides the global fallback set in __root.tsx
+  useEffect(() => {
+    const companyName = settings?.companyName || 'NSS Home Designs';
+    applySeo({
+      title: `Book a Free Consultation — ${companyName}`,
+      description: `Contact ${companyName} to book your complimentary interior design consultation. We respond within one business day.`,
+      ogTitle: `Book a Free Consultation — ${companyName}`,
+      ogDescription: 'Share your project details and our team will reach out within one business day.',
+    });
+  }, [settings]);
+
+  // Pull live values from settings — fall back gracefully if not yet loaded
+  const phone = settings?.phone || '+91 98000 00000';
+  const whatsapp = settings?.whatsapp || '919800000000';
+  const email = settings?.email || 'hello@nsshomedesigns.in';
+  const address = settings?.address || 'Bengaluru, Karnataka';
+  const businessHours = settings?.businessHours || 'Mon — Sat · 10:00 – 19:00';
+
+  // Build WhatsApp URL — strip non-digits and prepend 91 if needed
+  const waNumber = whatsapp.replace(/\D/g, '');
+  const waUrl = `https://wa.me/${waNumber}?text=Hi%20NSS%20Home%20Designs%2C%20I%27d%20like%20to%20discuss%20a%20project.`;
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    try {
+      await createLead({
+        name: formData.get('name') as string || '',
+        phone: formData.get('phone') as string || '',
+        email: formData.get('email') as string || '',
+        service: formData.get('service') as string || '',
+        budget: formData.get('budget') as string || '',
+        location: formData.get('location') as string || '',
+        message: formData.get('message') as string || '',
+        preferredDate: formData.get('preferredDate') as string || undefined,
+        preferredTime: formData.get('preferredTime') as string || undefined,
+        status: 'new',
+        // Spread UTM data captured on landing — all fields are optional
+        ...getStoredUTM(),
+      });
+      setSent(true);
+      toast.success('Your request has been submitted!');
+    } catch (err) {
+      toast.error('Something went wrong. Please try again.');
+    }
+  };
 
   return (
     <SiteLayout>
@@ -33,7 +78,7 @@ function Contact() {
       <section className="container-luxe pb-24">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
           <form
-            onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+            onSubmit={onSubmit}
             className="rounded-sm border border-border bg-card p-6 md:p-10"
           >
             {sent ? (
@@ -54,6 +99,33 @@ function Contact() {
                   <Select label="Budget" name="budget" options={["Under ₹3L", "₹3L – ₹6L", "₹6L – ₹12L", "₹12L+", "Not sure"]} />
                 </div>
                 <Field label="Location / Area" name="location" placeholder="e.g. Whitefield, HSR Layout" />
+
+                {/* Scheduling — optional preferred date & time */}
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+                      Preferred Date <span className="normal-case text-muted-foreground/60">(optional)</span>
+                    </label>
+                    <input
+                      name="preferredDate"
+                      type="date"
+                      min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
+                      className="w-full rounded-sm border border-input bg-background px-4 py-3 text-sm outline-none transition focus:border-gold"
+                    />
+                  </div>
+                  <Select
+                    label="Preferred Time (optional)"
+                    name="preferredTime"
+                    options={[
+                      '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
+                      '12:00 PM', '12:30 PM', '01:00 PM', '01:30 PM',
+                      '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM',
+                      '04:00 PM', '04:30 PM', '05:00 PM', '05:30 PM',
+                      '06:00 PM', '06:30 PM', '07:00 PM',
+                    ]}
+                  />
+                </div>
+
                 <div>
                   <label className="mb-2 block text-[11px] uppercase tracking-[0.25em] text-muted-foreground">Tell us about your project</label>
                   <textarea
@@ -74,15 +146,31 @@ function Contact() {
           </form>
 
           <aside className="space-y-6">
-            <ContactCard icon={Phone} title="Call" detail="+91 98000 00000" href="tel:+919800000000" />
-            <ContactCard icon={MessageCircle} title="WhatsApp" detail="Chat with our team" href="https://wa.me/919800000000" />
-            <ContactCard icon={Mail} title="Email" detail="hello@nsshomedesigns.in" href="mailto:hello@nsshomedesigns.in" />
-            <ContactCard icon={MapPin} title="Studio" detail="Bengaluru, Karnataka" />
+            <ContactCard icon={Phone} title="Call" detail={phone} href={`tel:${phone.replace(/\s/g, '')}`} />
+            <ContactCard icon={MessageCircle} title="WhatsApp" detail="Chat with our team" href={waUrl} />
+            <ContactCard icon={Mail} title="Email" detail={email} href={`mailto:${email}`} />
+            <ContactCard icon={MapPin} title="Studio" detail={address} />
             <div className="rounded-sm bg-ink p-6 text-cream">
               <p className="text-[11px] uppercase tracking-[0.3em] text-gold">Hours</p>
-              <p className="mt-3 text-sm text-cream/80">Mon — Sat · 10:00 – 19:00</p>
-              <p className="text-sm text-cream/80">Sunday · By appointment</p>
+              <p className="mt-3 text-sm text-cream/80">{businessHours}</p>
             </div>
+
+            {/* Google Maps embed — only shown when URL is set in admin settings */}
+            {settings?.mapsEmbedUrl && (
+              <div className="overflow-hidden rounded-sm border border-border">
+                <iframe
+                  src={settings.mapsEmbedUrl}
+                  width="100%"
+                  height="220"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="NSS Home Designs location"
+                  className="block"
+                />
+              </div>
+            )}
           </aside>
         </div>
       </section>
