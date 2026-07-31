@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Award, Hammer, PencilRuler, Sparkles, Quote, Check } from "lucide-react";
+import { useEffect, useState } from "react";
 import heroImg from "@/assets/hero.jpg";
 import kitchenImg from "@/assets/portfolio-kitchen.jpg";
 import bedroomImg from "@/assets/portfolio-bedroom.jpg";
@@ -7,37 +8,146 @@ import officeImg from "@/assets/portfolio-office.jpg";
 import wardrobeImg from "@/assets/portfolio-wardrobe.jpg";
 import ceilingImg from "@/assets/portfolio-ceiling.jpg";
 import { SiteLayout } from "@/components/SiteLayout";
+import { useServices } from "@/hooks/use-services";
+import { usePortfolio } from "@/hooks/use-portfolio";
+import { useTestimonials } from "@/hooks/use-testimonials";
+import { useSettings } from "@/hooks/use-settings";
+import { applySeo } from "@/lib/seo";
+import { createLead } from "@/mock-api/leads";
+import { getStoredUTM } from "@/lib/utm";
+import { usePublishedFaqs } from "@/hooks/use-faqs";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/")(
   {
-    head: () => ({
-      meta: [
-        { title: "NSS Home Designs — Interiors & Woodwork" },
-        { name: "description", content: "NSS Home Designs — interior design, modular furniture, modular kitchens, doors & woodwork, and complete home solutions." },
-        { property: "og:title", content: "NSS Home Designs — Interiors & Woodwork" },
-        { property: "og:description", content: "Designing Dreams, Building Better Homes." },
-        { property: "og:image", content: heroImg },
-        { name: "twitter:image", content: heroImg },
-      ],
-    }),
     component: Home,
   },
 );
 
-const services = [
+// ---------------------------------------------------------------------------
+// HeroLeadForm — inline lead capture embedded in the hero section
+// ---------------------------------------------------------------------------
+const heroServices = [
+  "Home Interiors",
+  "Modular Kitchen",
+  "Wardrobes",
+  "Office Interior",
+  "Renovation",
+  "Other",
+];
+
+function HeroLeadForm({ serviceOptions }: { serviceOptions: string[] }) {
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    const fd = new FormData(e.currentTarget);
+    try {
+      await createLead({
+        name: fd.get('name') as string || '',
+        phone: fd.get('phone') as string || '',
+        email: '',
+        service: fd.get('service') as string || '',
+        budget: '',
+        location: '',
+        message: 'Submitted via homepage hero form.',
+        status: 'new',
+        ...getStoredUTM(),
+      });
+      setSubmitted(true);
+    } catch {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <div className="mt-10 flex items-center gap-4 rounded-sm border border-gold/40 bg-ink/60 px-6 py-5 backdrop-blur-sm">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gold/20 text-gold font-display text-lg">✓</span>
+        <div>
+          <p className="font-display text-lg text-cream">We'll be in touch soon!</p>
+          <p className="mt-0.5 text-xs text-cream/60">Our team typically responds within a few hours.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="mt-10 flex flex-col gap-3 rounded-sm border border-cream/15 bg-ink/60 p-4 backdrop-blur-sm sm:flex-row sm:items-end"
+    >
+      {/* Name */}
+      <div className="flex-1 space-y-1.5">
+        <label className="block text-[10px] uppercase tracking-[0.3em] text-cream/50">Your Name</label>
+        <input
+          name="name"
+          required
+          placeholder="e.g. Priya Sharma"
+          className="w-full rounded-sm border border-cream/20 bg-ink/80 px-3 py-2.5 text-sm text-cream placeholder:text-cream/30 outline-none transition focus:border-gold"
+        />
+      </div>
+      {/* Phone */}
+      <div className="flex-1 space-y-1.5">
+        <label className="block text-[10px] uppercase tracking-[0.3em] text-cream/50">Phone Number</label>
+        <input
+          name="phone"
+          type="tel"
+          required
+          placeholder="+91 98765 43210"
+          className="w-full rounded-sm border border-cream/20 bg-ink/80 px-3 py-2.5 text-sm text-cream placeholder:text-cream/30 outline-none transition focus:border-gold"
+        />
+      </div>
+      {/* Service */}
+      <div className="flex-1 space-y-1.5">
+        <label className="block text-[10px] uppercase tracking-[0.3em] text-cream/50">Interested In</label>
+        <select
+          name="service"
+          className="w-full rounded-sm border border-cream/20 bg-ink/80 px-3 py-2.5 text-sm text-cream outline-none transition focus:border-gold"
+        >
+          <option value="">Select a service…</option>
+          {serviceOptions.map((s) => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </div>
+      {/* Submit */}
+      <button
+        type="submit"
+        disabled={loading}
+        className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-sm bg-gold px-6 py-2.5 text-xs font-medium uppercase tracking-[0.25em] text-ink transition-all hover:bg-cream disabled:opacity-60"
+      >
+        {loading ? 'Sending…' : 'Get a Callback'}
+        {!loading && <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />}
+      </button>
+    </form>
+  );
+}
+
+// Static fallbacks — only shown when DB is completely empty
+const staticServices = [
   { icon: PencilRuler, title: "Interior Design", desc: "Considered residential interiors tailored to how you live." },
   { icon: Hammer, title: "Modular Kitchens", desc: "Ergonomic, durable kitchens with premium hardware and finishes." },
   { icon: Sparkles, title: "Modular Furniture", desc: "Wardrobes, storage and bespoke furniture built to your inch." },
   { icon: Award, title: "Doors & Woodwork", desc: "Custom doors, panelling and joinery, master-crafted in our workshop." },
 ];
 
-const projects = [
+const staticProjects = [
   { img: kitchenImg, title: "Onyx Kitchen", tag: "Modular Kitchen" },
   { img: bedroomImg, title: "Serene Suite", tag: "Master Bedroom" },
   { img: officeImg, title: "Walnut Workspace", tag: "Workspace Interior" },
   { img: wardrobeImg, title: "Atelier Wardrobe", tag: "Modular Wardrobe" },
   { img: ceilingImg, title: "Luminous Ceiling", tag: "Ceiling & Lighting" },
   { img: heroImg, title: "Noir Living", tag: "Living Room" },
+];
+
+const staticTestimonials = [
+  { quote: "NSS Home Designs transformed our apartment into something we never imagined possible. Detail-obsessed in the best way.", name: "Ananya R.", where: "Homeowner" },
+  { quote: "From the modular kitchen to the wardrobes — flawless craftsmanship and on-time delivery. Highly recommended.", name: "Rohit & Meera", where: "Homeowners" },
+  { quote: "Our space finally reflects who we are. The team listened, designed and delivered beyond expectations.", name: "Vikram S.", where: "Client" },
 ];
 
 const process = [
@@ -47,13 +157,80 @@ const process = [
   { n: "04", t: "Handover", d: "Walkthrough, styling and a beautifully finished space." },
 ];
 
-const testimonials = [
-  { quote: "NSS Home Designs transformed our apartment into something we never imagined possible. Detail-obsessed in the best way.", name: "Ananya R.", where: "Homeowner" },
-  { quote: "From the modular kitchen to the wardrobes — flawless craftsmanship and on-time delivery. Highly recommended.", name: "Rohit & Meera", where: "Homeowners" },
-  { quote: "Our space finally reflects who we are. The team listened, designed and delivered beyond expectations.", name: "Vikram S.", where: "Client" },
-];
+function getCategoryIcon(category: string) {
+  const iconMap: Record<string, typeof PencilRuler> = {
+    'Interior Design': PencilRuler,
+    'Modular Kitchens': Hammer,
+    'Modular Kitchen': Hammer,
+    'Modular Furniture': Sparkles,
+    'Doors & Woodwork': Award,
+    'Kitchen': Hammer,
+    'Bedroom': PencilRuler,
+    'Living Room': PencilRuler,
+    'Office': Sparkles,
+    'Wardrobe': Award,
+  };
+  return iconMap[category] || PencilRuler;
+}
 
 function Home() {
+  const { data: dbServices } = useServices();
+  const { data: dbProjects } = usePortfolio();
+  const { data: dbTestimonials } = useTestimonials();
+  const { data: settings } = useSettings();
+
+  // Page-specific SEO — uses the company SEO settings for the homepage
+  useEffect(() => {
+    if (!settings) return;
+    const seo = settings.seo || {};
+    const companyName = settings.companyName || 'NSS Home Designs';
+    const tagline = settings.tagline || 'Designing Dreams, Building Better Homes';
+    applySeo({
+      title: seo.metaTitle || `${companyName} — ${tagline}`,
+      description: seo.metaDescription || `${companyName}: Premium interior design, modular kitchens and custom furniture in Bengaluru.`,
+      ogTitle: seo.ogTitle || seo.metaTitle || companyName,
+      ogDescription: seo.ogDescription || seo.metaDescription || tagline,
+      ogImage: seo.ogImage || '',
+      twitterCard: seo.twitterCard || 'summary_large_image',
+    });
+  }, [settings]);
+
+  // Services: prefer featured from DB, fallback to all DB services, then static
+  const displayServices = (() => {
+    if (!dbServices || dbServices.length === 0) return staticServices;
+    const featured = dbServices.filter((s: any) => s.featured);
+    const source = featured.length > 0 ? featured : dbServices;
+    return source.slice(0, 4).map((s: any) => ({
+      icon: getCategoryIcon(s.category || ''),
+      title: s.title,
+      desc: s.description,
+    }));
+  })();
+
+  // Projects: prefer featured/published from DB, fallback to all DB projects, then static
+  const displayProjects = (() => {
+    if (!dbProjects || dbProjects.length === 0) return staticProjects;
+    const published = dbProjects.filter((p: any) => p.status === 'published' || p.featured);
+    const source = published.length > 0 ? published : dbProjects;
+    return source.slice(0, 6).map((p: any) => ({
+      img: p.thumbnail || heroImg,
+      title: p.name,
+      tag: p.category,
+    }));
+  })();
+
+  // Testimonials: prefer featured from DB, fallback to all DB testimonials, then static
+  const displayTestimonials = (() => {
+    if (!dbTestimonials || dbTestimonials.length === 0) return staticTestimonials;
+    const featured = dbTestimonials.filter((t: any) => t.featured);
+    const source = featured.length > 0 ? featured : dbTestimonials;
+    return source.slice(0, 3).map((t: any) => ({
+      quote: t.review,
+      name: t.name,
+      where: t.designation || t.company || 'Client',
+    }));
+  })();
+
   return (
     <SiteLayout>
       {/* HERO */}
@@ -74,19 +251,27 @@ function Home() {
           <p className="mt-6 max-w-xl text-base text-cream/80 md:text-lg">
             Complete home solutions — interior design, modular furniture, modular kitchens, and bespoke doors & woodwork.
           </p>
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <Link
-              to="/contact"
-              className="group inline-flex items-center justify-center gap-3 rounded-sm bg-gold px-7 py-4 text-xs font-medium uppercase tracking-[0.25em] text-ink transition-all hover:bg-cream"
-            >
-              Book a Free Consultation
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+
+          {/* Inline lead form — replaces the two navigation buttons */}
+          <HeroLeadForm serviceOptions={
+            displayServices.length > 0
+              ? displayServices.map((s) => s.title)
+              : heroServices
+          } />
+
+          {/* Secondary actions below the form */}
+          <div className="mt-4 flex items-center gap-6">
             <Link
               to="/portfolio"
-              className="inline-flex items-center justify-center gap-3 rounded-sm border border-cream/30 px-7 py-4 text-xs font-medium uppercase tracking-[0.25em] text-cream backdrop-blur-sm transition-colors hover:border-gold hover:text-gold"
+              className="text-xs uppercase tracking-[0.25em] text-cream/60 transition hover:text-gold"
             >
-              View Portfolio
+              View Portfolio →
+            </Link>
+            <Link
+              to="/contact"
+              className="text-xs uppercase tracking-[0.25em] text-cream/60 transition hover:text-gold"
+            >
+              Full Contact Form →
             </Link>
           </div>
         </div>
@@ -125,7 +310,7 @@ function Home() {
             </Link>
           </div>
           <div className="grid gap-px overflow-hidden rounded-sm bg-border sm:grid-cols-2">
-            {services.map((s) => (
+            {displayServices.map((s) => (
               <div key={s.title} className="group bg-card p-8 transition-colors hover:bg-ink hover:text-cream">
                 <s.icon className="h-7 w-7 text-gold" strokeWidth={1.25} />
                 <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
@@ -149,7 +334,7 @@ function Home() {
             </Link>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.slice(0, 6).map((p) => (
+            {displayProjects.map((p) => (
               <figure key={p.title} className="group overflow-hidden rounded-sm bg-card shadow-[var(--shadow-soft)]">
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <img
@@ -231,7 +416,7 @@ function Home() {
           <h2 className="mt-4 font-display text-4xl md:text-5xl">From the people who live in them.</h2>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {testimonials.map((t) => (
+          {displayTestimonials.map((t) => (
             <blockquote key={t.name} className="flex h-full flex-col rounded-sm border border-border bg-card p-8">
               <Quote className="h-7 w-7 text-gold" />
               <p className="mt-6 grow text-foreground/85 leading-relaxed">"{t.quote}"</p>
@@ -243,6 +428,9 @@ function Home() {
           ))}
         </div>
       </section>
+
+      {/* FAQ section */}
+      <FaqSection />
 
       {/* CTA */}
       <section className="container-luxe pb-20 md:pb-28">
@@ -269,5 +457,38 @@ function Home() {
         </div>
       </section>
     </SiteLayout>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// FaqSection — renders published FAQs in an accordion on the homepage
+// ---------------------------------------------------------------------------
+function FaqSection() {
+  const { data: faqs = [] } = usePublishedFaqs();
+  if (faqs.length === 0) return null;
+
+  return (
+    <section className="container-luxe pb-20 md:pb-28">
+      <div className="text-center mb-10">
+        <p className="text-[11px] uppercase tracking-[0.4em] text-gold">FAQ</p>
+        <h2 className="mt-4 font-display text-4xl md:text-5xl">
+          Common <span className="italic text-gold-gradient">questions</span>.
+        </h2>
+      </div>
+      <div className="max-w-3xl mx-auto">
+        <Accordion type="single" collapsible className="space-y-3">
+          {faqs.map((faq) => (
+            <AccordionItem key={faq.id} value={faq.id} className="border border-border rounded-sm px-6 data-[state=open]:border-gold/30 transition-colors">
+              <AccordionTrigger className="text-left font-display text-lg py-5 hover:no-underline hover:text-gold">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
+                {faq.answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </section>
   );
 }
