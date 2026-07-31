@@ -5,3 +5,4 @@ build/
 .DS_Store
 /.idea
 /.vscode
+imp_prompt_for _project.md
