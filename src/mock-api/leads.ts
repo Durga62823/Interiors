@@ -50,21 +50,21 @@ function fromRow(row: LeadRow): Lead {
 
 function toRow(data: Partial<Lead>): Record<string, unknown> {
   const row: Record<string, unknown> = {};
-  if (data.name !== undefined)         row.name = data.name;
-  if (data.phone !== undefined)        row.phone = data.phone;
-  if (data.email !== undefined)        row.email = data.email;
-  if (data.service !== undefined)      row.service = data.service;
-  if (data.budget !== undefined)       row.budget = data.budget;
-  if (data.location !== undefined)     row.location = data.location;
-  if (data.status !== undefined)       row.status = data.status;
-  if (data.message !== undefined)      row.message = data.message;
+  if (data.name !== undefined) row.name = data.name;
+  if (data.phone !== undefined) row.phone = data.phone;
+  if (data.email !== undefined) row.email = data.email;
+  if (data.service !== undefined) row.service = data.service;
+  if (data.budget !== undefined) row.budget = data.budget;
+  if (data.location !== undefined) row.location = data.location;
+  if (data.status !== undefined) row.status = data.status;
+  if (data.message !== undefined) row.message = data.message;
   // UTM fields — only included when present (won't overwrite on plain status updates)
-  if (data.source !== undefined)       row.source = data.source;
-  if (data.utm_source !== undefined)   row.utm_source = data.utm_source;
-  if (data.utm_medium !== undefined)   row.utm_medium = data.utm_medium;
+  if (data.source !== undefined) row.source = data.source;
+  if (data.utm_source !== undefined) row.utm_source = data.utm_source;
+  if (data.utm_medium !== undefined) row.utm_medium = data.utm_medium;
   if (data.utm_campaign !== undefined) row.utm_campaign = data.utm_campaign;
-  if (data.utm_term !== undefined)     row.utm_term = data.utm_term;
-  if (data.utm_content !== undefined)  row.utm_content = data.utm_content;
+  if (data.utm_term !== undefined) row.utm_term = data.utm_term;
+  if (data.utm_content !== undefined) row.utm_content = data.utm_content;
   // Scheduling fields
   if (data.preferredDate !== undefined) row.preferred_date = data.preferredDate || null;
   if (data.preferredTime !== undefined) row.preferred_time = data.preferredTime || null;
@@ -90,8 +90,26 @@ export const createLead = async (data: Omit<Lead, 'id' | 'createdAt'>): Promise<
   const { data: created, error } = await supabase.from('leads').insert([toRow(data)]).select().single();
   if (error) throw error;
   const lead = fromRow(created as LeadRow);
+
   // Fire GA4 conversion event — no-op when GA4 is not configured
   trackGenerateLead({ service: lead.service, source: lead.source });
+
+  // Trigger email notification edge function directly
+  // This replaces the Database Webhook requirement
+  const { data: fnData, error: fnError } = await supabase.functions.invoke(
+    'lead-notification',
+    {
+      body: lead,
+    }
+  );
+
+  console.log("Function Data:", fnData);
+  console.log("Function Error:", fnError);
+
+  if (fnError) {
+    console.error("Edge Function Error:", fnError);
+  }
+
   return lead;
 };
 
@@ -113,14 +131,14 @@ export const updateLeadStatus = async (id: string, status: LeadStatus): Promise<
 export const exportLeadsCSV = async (): Promise<string> => {
   const leads = await getLeads();
   if (leads.length === 0) return '';
-  
+
   const headers = Object.keys(leads[0]).join(',');
   const rows = leads.map(lead => {
     return Object.values(lead)
       .map(value => `"${String(value).replace(/"/g, '""')}"`)
       .join(',');
   });
-  
+
   return [headers, ...rows].join('\n');
 };
 
