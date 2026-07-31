@@ -98,3 +98,65 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--color-gold) 50%, transparent);
 }
+
+/* ────────────────────────────────────────────────
+   Admin Dashboard Design Tokens
+   ──────────────────────────────────────────────── */
+
+@theme {
+  --color-sidebar: var(--color-ink);
+  --color-sidebar-foreground: var(--color-cream);
+  --color-sidebar-accent: oklch(0.24 0.008 60);
+  --color-sidebar-accent-foreground: var(--color-cream);
+  --color-sidebar-border: oklch(1 0 0 / 10%);
+  --color-sidebar-ring: var(--color-gold);
+}
+
+.dark {
+  --color-sidebar: oklch(0.10 0.008 60);
+  --color-sidebar-accent: oklch(0.20 0.008 60);
+}
+
+/* Admin utility classes */
+@layer components {
+  .admin-card {
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-card);
+    box-shadow: 0 1px 3px oklch(0 0 0 / 0.04), 0 1px 2px oklch(0 0 0 / 0.02);
+    transition: box-shadow 0.2s ease;
+  }
+  .admin-card:hover {
+    box-shadow: 0 4px 12px oklch(0 0 0 / 0.08), 0 2px 4px oklch(0 0 0 / 0.04);
+  }
+
+  .admin-glass {
+    background: oklch(1 0 0 / 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .dark .admin-glass {
+    background: oklch(0 0 0 / 0.4);
+  }
+}
+
+/* Admin animations */
+@keyframes admin-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes admin-scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes admin-slide-in-left {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-admin-fade-in {
+  animation: admin-fade-in 0.4s ease-out both;
+}
+.animate-admin-scale-in {
+  animation: admin-scale-in 0.3s ease-out both;
+}

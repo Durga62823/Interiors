@@ -3,7 +3,7 @@ import { createRouter } from "@tanstack/react-router";
 
 import { routeTree } from "./routeTree.gen";
 
-let router: ReturnType<typeof createRouter> | undefined;
+let router: ReturnType<typeof createAppRouter> | undefined;
 
 function createAppRouter() {
 	const queryClient = new QueryClient({
