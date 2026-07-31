@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { SiteNav } from "./SiteNav";
 import { SiteFooter } from "./SiteFooter";
 import { WhatsAppButton } from "./WhatsAppButton";
+import { MobileStickyCTA } from "./MobileStickyCTA";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,6 +11,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <main>{children}</main>
       <SiteFooter />
       <WhatsAppButton />
+      <MobileStickyCTA />
     </div>
   );
 }
