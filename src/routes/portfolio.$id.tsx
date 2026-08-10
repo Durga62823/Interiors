@@ -23,7 +23,7 @@ function PortfolioDetail() {
   // Page-specific SEO
   useEffect(() => {
     if (!project) return;
-    const companyName = settings?.companyName || "NSS Home Designs";
+    const companyName = settings?.companyName || "Neeli Home Designs";
     applySeo({
       title: `${project.name} — ${project.category} · ${companyName}`,
       description:
@@ -72,10 +72,10 @@ function PortfolioDetail() {
 
   // ── Spec items — only rendered when the field is non-empty ─────────────────
   const specs = [
-    { icon: MapPin,    label: "Location",    value: project.location },
-    { icon: Ruler,     label: "Area",        value: project.area },
-    { icon: Banknote,  label: "Budget",      value: project.budget },
-    { icon: Calendar,  label: "Completed",   value: project.completionDate },
+    { icon: MapPin, label: "Location", value: project.location },
+    { icon: Ruler, label: "Area", value: project.area },
+    { icon: Banknote, label: "Budget", value: project.budget },
+    { icon: Calendar, label: "Completed", value: project.completionDate },
   ].filter((s) => s.value);
 
   const galleryImages = project.gallery && project.gallery.length > 0

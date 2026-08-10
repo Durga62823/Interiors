@@ -1,5 +1,5 @@
 -- ============================================================
--- NSS Home Designs — Migration 006: Consultation Scheduling
+-- Neeli Home Designs — Migration 006: Consultation Scheduling
 -- Run this in: Supabase Dashboard → SQL Editor
 -- ============================================================
 

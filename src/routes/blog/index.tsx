@@ -13,7 +13,7 @@ function BlogIndex() {
   const { data: settings } = useSettings()
 
   useEffect(() => {
-    const companyName = settings?.companyName || 'NSS Home Designs'
+    const companyName = settings?.companyName || 'Neeli Home Designs'
     applySeo({
       title: `Interior Design Blog — ${companyName}`,
       description: `Read expert articles on interior design trends, tips, and ideas from ${companyName}. Everything you need to plan your dream home.`,
@@ -37,7 +37,7 @@ function BlogIndex() {
       <section className="container-luxe pb-24">
         {isLoading && (
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {[1,2,3].map((i) => (
+            {[1, 2, 3].map((i) => (
               <div key={i} className="animate-pulse space-y-4">
                 <div className="h-48 rounded-sm bg-muted" />
                 <div className="h-4 w-3/4 rounded bg-muted" />

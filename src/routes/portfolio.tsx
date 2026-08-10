@@ -18,12 +18,12 @@ export const Route = createFileRoute("/portfolio")({
 // Static fallbacks — only shown when DB is completely empty
 // 'category' is the clean filter key; 'tag' is the display string
 const staticProjects = [
-  { id: "static-1", img: heroImg,      title: "Noir Living",       tag: "Living Room · Jayanagar",        category: "Living Room",    span: "lg:col-span-2 aspect-[16/10]" },
-  { id: "static-2", img: kitchenImg,   title: "Onyx Kitchen",      tag: "Modular Kitchen · Whitefield",   category: "Modular Kitchen", span: "aspect-[4/5]" },
-  { id: "static-3", img: bedroomImg,   title: "Serene Suite",      tag: "Master Bedroom · HSR Layout",    category: "Bedroom",        span: "aspect-[4/5]" },
-  { id: "static-4", img: officeImg,    title: "Walnut Workspace",   tag: "Office · Koramangala",           category: "Office",         span: "aspect-[4/5]" },
-  { id: "static-5", img: wardrobeImg,  title: "Atelier Wardrobe",  tag: "Walk-in Closet · Indiranagar",   category: "Wardrobe",       span: "aspect-[4/5]" },
-  { id: "static-6", img: ceilingImg,   title: "Luminous Ceiling",  tag: "False Ceiling · Electronic City",category: "False Ceiling",  span: "lg:col-span-2 aspect-[16/10]" },
+  { id: "static-1", img: heroImg, title: "Noir Living", tag: "Living Room · Jayanagar", category: "Living Room", span: "lg:col-span-2 aspect-[16/10]" },
+  { id: "static-2", img: kitchenImg, title: "Onyx Kitchen", tag: "Modular Kitchen · Whitefield", category: "Modular Kitchen", span: "aspect-[4/5]" },
+  { id: "static-3", img: bedroomImg, title: "Serene Suite", tag: "Master Bedroom · HSR Layout", category: "Bedroom", span: "aspect-[4/5]" },
+  { id: "static-4", img: officeImg, title: "Walnut Workspace", tag: "Office · Koramangala", category: "Office", span: "aspect-[4/5]" },
+  { id: "static-5", img: wardrobeImg, title: "Atelier Wardrobe", tag: "Walk-in Closet · Indiranagar", category: "Wardrobe", span: "aspect-[4/5]" },
+  { id: "static-6", img: ceilingImg, title: "Luminous Ceiling", tag: "False Ceiling · Electronic City", category: "False Ceiling", span: "lg:col-span-2 aspect-[16/10]" },
 ];
 
 function Portfolio() {
@@ -32,7 +32,7 @@ function Portfolio() {
   const [activeFilter, setActiveFilter] = useState("All");
 
   useEffect(() => {
-    const companyName = settings?.companyName || 'NSS Home Designs';
+    const companyName = settings?.companyName || 'Neeli Home Designs';
     applySeo({
       title: `Interior Design Portfolio — ${companyName}`,
       description: `Browse our completed interior design projects in Bengaluru — modular kitchens, bedrooms, living rooms, wardrobes and full home transformations.`,
@@ -98,11 +98,10 @@ function Portfolio() {
               <button
                 key={cat}
                 onClick={() => setActiveFilter(cat)}
-                className={`rounded-sm px-5 py-2 text-xs font-medium uppercase tracking-[0.2em] transition-all duration-200 ${
-                  activeFilter === cat
+                className={`rounded-sm px-5 py-2 text-xs font-medium uppercase tracking-[0.2em] transition-all duration-200 ${activeFilter === cat
                     ? "bg-ink text-cream"
                     : "border border-border bg-transparent text-foreground hover:border-gold hover:text-gold"
-                }`}
+                  }`}
               >
                 {cat}
               </button>

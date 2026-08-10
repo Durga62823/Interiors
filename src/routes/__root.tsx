@@ -40,7 +40,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    console.error("Root error boundary caught:", error);
   }, [error]);
 
   return (
@@ -110,7 +110,7 @@ function GlobalSeoInjector() {
   useEffect(() => {
     if (!settings) return;
     const seo = settings.seo || {};
-    const companyName = settings.companyName || 'NSS Home Designs';
+    const companyName = settings.companyName || 'Neeli Home Designs';
     applySeo({
       title: seo.metaTitle || companyName,
       description: seo.metaDescription || '',

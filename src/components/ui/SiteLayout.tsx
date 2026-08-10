@@ -3,6 +3,7 @@ import { SiteNav } from "./SiteNav";
 import { SiteFooter } from "./SiteFooter";
 import { WhatsAppButton } from "./WhatsAppButton";
 import { MobileStickyCTA } from "./MobileStickyCTA";
+import { ConsultationPopup } from "./ConsultationPopup";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
@@ -12,6 +13,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <SiteFooter />
       <WhatsAppButton />
       <MobileStickyCTA />
+      <ConsultationPopup />
     </div>
   );
 }

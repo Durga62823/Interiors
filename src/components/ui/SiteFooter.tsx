@@ -6,11 +6,11 @@ import { useSettings } from "@/hooks/use-settings";
 export function SiteFooter() {
   const { data: settings } = useSettings();
 
-  const phone = settings?.phone || '+91 98000 00000';
-  const email = settings?.email || 'hello@nsshomedesigns.in';
-  const address = settings?.address || 'Bengaluru, Karnataka';
-  const companyName = settings?.companyName || 'NSS Home Designs';
-  const tagline = settings?.tagline || 'Designing Dreams, Building Better Homes';
+  const phone = settings?.phone || '+91 96526 34477';
+  const email = settings?.email || 'neelisdesignstudio@gmail.com';
+  const address = settings?.address || 'Hyderabad / Bengaluru';
+  const companyName = settings?.companyName || "Neeli's Design Studio";
+  const tagline = settings?.tagline || 'Designing Spaces, Inspiring Lives';
   const instagramUrl = settings?.social?.instagram || '#';
   const facebookUrl = settings?.social?.facebook || '#';
   const linkedinUrl = settings?.social?.linkedin || '#';
@@ -30,7 +30,7 @@ export function SiteFooter() {
           </div>
           <p className="mt-4 text-sm italic text-gold/90">{tagline}</p>
           <p className="mt-3 text-sm leading-relaxed text-cream/70">
-            Interiors &amp; woodwork crafted with care — modular furniture, kitchens, doors and complete home solutions.
+            Transforming your dreams into beautiful, functional and timeless spaces — from concept to completion.
           </p>
           <div className="mt-5 flex gap-3">
             {instagramUrl && instagramUrl !== '#' && (
@@ -66,21 +66,24 @@ export function SiteFooter() {
         <div>
           <h4 className="text-xs uppercase tracking-[0.3em] text-gold">Explore</h4>
           <ul className="mt-5 space-y-3 text-sm">
-            <li><Link to="/about" className="hover:text-gold">About</Link></li>
-            <li><Link to="/services" className="hover:text-gold">Services</Link></li>
-            <li><Link to="/portfolio" className="hover:text-gold">Portfolio</Link></li>
-            <li><Link to="/contact" className="hover:text-gold">Contact</Link></li>
+            <li><Link to="/" className="text-cream/80 hover:text-gold transition-colors">Home</Link></li>
+            <li><Link to="/about" className="text-cream/80 hover:text-gold transition-colors">About Us</Link></li>
+            <li><Link to="/services" className="text-cream/80 hover:text-gold transition-colors">Services</Link></li>
+            <li><Link to="/portfolio" className="text-cream/80 hover:text-gold transition-colors">Portfolio</Link></li>
+            <li><Link to="/blog" className="text-cream/80 hover:text-gold transition-colors">Blog</Link></li>
+            <li><Link to="/contact" className="text-cream/80 hover:text-gold transition-colors">Contact</Link></li>
           </ul>
         </div>
 
         <div>
-          <h4 className="text-xs uppercase tracking-[0.3em] text-gold">Services</h4>
-          <ul className="mt-5 space-y-3 text-sm text-cream/80">
-            <li>Interior Design</li>
-            <li>Modular Furniture</li>
-            <li>Modular Kitchens</li>
-            <li>Doors &amp; Woodwork</li>
-            <li>Complete Home Solutions</li>
+          <h4 className="text-xs uppercase tracking-[0.3em] text-gold">Our Services</h4>
+          <ul className="mt-5 space-y-3 text-sm">
+            <li><Link to="/services" className="text-cream/80 hover:text-gold transition-colors">Interior Design</Link></li>
+            <li><Link to="/services" className="text-cream/80 hover:text-gold transition-colors">Modular Kitchens</Link></li>
+            <li><Link to="/services" className="text-cream/80 hover:text-gold transition-colors">Wardrobes &amp; Storage</Link></li>
+            <li><Link to="/redesign" className="text-cream/80 hover:text-gold transition-colors">Design Reconstruction</Link></li>
+            <li><Link to="/estimate" className="text-cream/80 hover:text-gold transition-colors">Cost Estimator</Link></li>
+            <li><Link to="/services" className="text-cream/80 hover:text-gold transition-colors">Turnkey Solutions</Link></li>
           </ul>
         </div>
 
@@ -109,7 +112,7 @@ export function SiteFooter() {
       <div className="border-t border-cream/10">
         <div className="container-luxe flex flex-col items-start justify-between gap-3 py-6 text-xs text-cream/50 md:flex-row md:items-center">
           <p>© {new Date().getFullYear()} {companyName}. All rights reserved.</p>
-          <p className="tracking-wide">Designed with intention in Bengaluru.</p>
+          <p className="tracking-wide">Designing Spaces, Inspiring Lives.</p>
         </div>
       </div>
     </footer>

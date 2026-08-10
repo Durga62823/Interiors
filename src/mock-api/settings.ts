@@ -20,11 +20,11 @@ interface CompanySettingsRow {
 }
 
 const DEFAULT_SETTINGS: CompanySettings = {
-  companyName: 'NSS Home Designs',
-  tagline: 'Designing Dreams, Building Better Homes',
-  phone: '',
-  whatsapp: '',
-  email: '',
+  companyName: "Neeli's Design Studio",
+  tagline: 'Designing Spaces, Inspiring Lives',
+  phone: '+91 96526 34477',
+  whatsapp: '919652634477',
+  email: 'neelisdesignstudio@gmail.com',
   address: '',
   businessHours: '',
   social: {

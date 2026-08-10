@@ -23,7 +23,7 @@ function Login() {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  
+
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) {
@@ -59,7 +59,7 @@ function Login() {
       {/* Left Panel */}
       <div className="hidden lg:flex flex-col justify-center items-center w-1/2 bg-ink text-cream p-12 relative overflow-hidden">
         <div className="relative z-10 text-center">
-          <h1 className="text-4xl font-playfair mb-4 text-gold">NSS Home Designs</h1>
+          <h1 className="text-4xl font-playfair mb-4 text-gold">Neeli Home Designs</h1>
           <p className="text-lg text-cream/80 max-w-md">
             Premium admin dashboard for managing projects, services, and client leads.
           </p>
@@ -82,7 +82,7 @@ function Login() {
                 {error}
               </div>
             )}
-            
+
             <div className="space-y-2">
               <label className="text-sm font-medium text-ink">Email</label>
               <input

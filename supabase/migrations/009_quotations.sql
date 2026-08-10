@@ -1,5 +1,5 @@
 -- ============================================================
--- NSS Home Designs — Migration 009: Quotation Builder
+-- Neeli Home Designs — Migration 009: Quotation Builder
 -- Run this in: Supabase Dashboard → SQL Editor
 -- ============================================================
 

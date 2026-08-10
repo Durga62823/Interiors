@@ -12,7 +12,7 @@
  *      directly into the lead INSERT payload.
  */
 
-const SESSION_KEY = 'nss_utm';
+const SESSION_KEY = 'Neeli_utm';
 
 export interface UtmData {
   source: string;
@@ -29,13 +29,13 @@ export interface UtmData {
  */
 function deriveSource(utmSource: string): string {
   const s = utmSource.toLowerCase();
-  if (s.includes('google'))    return 'google';
+  if (s.includes('google')) return 'google';
   if (s.includes('instagram')) return 'instagram';
   if (s.includes('facebook') || s.includes('fb')) return 'facebook';
-  if (s.includes('whatsapp'))  return 'whatsapp';
-  if (s.includes('bing'))      return 'bing';
-  if (s.includes('youtube'))   return 'youtube';
-  if (s === '')                 return 'direct';
+  if (s.includes('whatsapp')) return 'whatsapp';
+  if (s.includes('bing')) return 'bing';
+  if (s.includes('youtube')) return 'youtube';
+  if (s === '') return 'direct';
   return 'other';
 }
 
@@ -54,12 +54,12 @@ export function captureUTM(): void {
   if (!utmSource && !params.get('utm_medium') && !params.get('utm_campaign')) return;
 
   const data: UtmData = {
-    source:       deriveSource(utmSource),
-    utm_source:   utmSource,
-    utm_medium:   params.get('utm_medium')   || '',
+    source: deriveSource(utmSource),
+    utm_source: utmSource,
+    utm_medium: params.get('utm_medium') || '',
     utm_campaign: params.get('utm_campaign') || '',
-    utm_term:     params.get('utm_term')     || '',
-    utm_content:  params.get('utm_content')  || '',
+    utm_term: params.get('utm_term') || '',
+    utm_content: params.get('utm_content') || '',
   };
 
   try {

@@ -1,5 +1,5 @@
 -- ============================================================
--- NSS Home Designs — Migration 011: Blog
+-- Neeli Home Designs — Migration 011: Blog
 -- Run this in: Supabase Dashboard → SQL Editor
 -- ============================================================
 

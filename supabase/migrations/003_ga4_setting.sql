@@ -1,5 +1,5 @@
 -- ============================================================
--- NSS Home Designs — Migration 003: GA4 Measurement ID
+-- Neeli Home Designs — Migration 003: GA4 Measurement ID
 -- Run this in: Supabase Dashboard → SQL Editor
 -- ============================================================
 

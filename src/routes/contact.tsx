@@ -18,25 +18,25 @@ function Contact() {
 
   // Page-specific SEO — overrides the global fallback set in __root.tsx
   useEffect(() => {
-    const companyName = settings?.companyName || 'NSS Home Designs';
+    const companyName = settings?.companyName || 'Neeli Home Designs';
     applySeo({
-      title: `Book a Free Consultation — ${companyName}`,
-      description: `Contact ${companyName} to book your complimentary interior design consultation. We respond within one business day.`,
-      ogTitle: `Book a Free Consultation — ${companyName}`,
+      title: `Book a Free Consultation — Neeli's Design Studio`,
+      description: `Contact Neeli's Design Studio to book your complimentary interior design consultation. We respond within one business day.`,
+      ogTitle: `Book a Free Consultation — Neeli's Design Studio`,
       ogDescription: 'Share your project details and our team will reach out within one business day.',
     });
   }, [settings]);
 
   // Pull live values from settings — fall back gracefully if not yet loaded
-  const phone = settings?.phone || '+91 98000 00000';
-  const whatsapp = settings?.whatsapp || '919800000000';
-  const email = settings?.email || 'hello@nsshomedesigns.in';
-  const address = settings?.address || 'Bengaluru, Karnataka';
+  const phone = settings?.phone || '+91 96526 34477';
+  const whatsapp = settings?.whatsapp || '919652634477';
+  const email = settings?.email || 'neelisdesignstudio@gmail.com';
+  const address = settings?.address || 'Hyderabad / Bengaluru';
   const businessHours = settings?.businessHours || 'Mon — Sat · 10:00 – 19:00';
 
   // Build WhatsApp URL — strip non-digits and prepend 91 if needed
   const waNumber = whatsapp.replace(/\D/g, '');
-  const waUrl = `https://wa.me/${waNumber}?text=Hi%20NSS%20Home%20Designs%2C%20I%27d%20like%20to%20discuss%20a%20project.`;
+  const waUrl = `https://wa.me/${waNumber}?text=Hi%20Neeli's%20Design%20Studio%2C%20I%27d%20like%20to%20discuss%20a%20project.`;
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -166,7 +166,7 @@ function Contact() {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="NSS Home Designs location"
+                  title="Neeli Home Designs location"
                   className="block"
                 />
               </div>

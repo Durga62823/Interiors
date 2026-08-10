@@ -36,14 +36,13 @@ export function MobileStickyCTA() {
   const phone = settings?.phone || "";
   const whatsapp = settings?.whatsapp || "";
   const waNumber = whatsapp.replace(/\D/g, "");
-  const waUrl = `https://wa.me/${waNumber}?text=Hi%20NSS%20Home%20Designs%2C%20I%27d%20like%20to%20discuss%20a%20project.`;
+  const waUrl = `https://wa.me/${waNumber}?text=Hi%20Neeli%20Home%20Designs%2C%20I%27d%20like%20to%20discuss%20a%20project.`;
   const telUrl = `tel:${phone.replace(/\s/g, "")}`;
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-500 ease-out ${
-        visible ? "translate-y-0" : "translate-y-full"
-      }`}
+      className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-500 ease-out ${visible ? "translate-y-0" : "translate-y-full"
+        }`}
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="grid grid-cols-2 border-t border-gold/30 bg-ink">
@@ -51,7 +50,7 @@ export function MobileStickyCTA() {
         <a
           href={telUrl}
           className="flex items-center justify-center gap-2.5 py-4 text-xs font-medium uppercase tracking-[0.2em] text-cream transition-colors hover:bg-gold/10 active:bg-gold/20 border-r border-gold/20"
-          aria-label="Call NSS Home Designs"
+          aria-label="Call Neeli Home Designs"
         >
           <Phone className="h-4 w-4 text-gold shrink-0" />
           <span>Call Now</span>

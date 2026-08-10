@@ -15,7 +15,7 @@ function About() {
   const { data: settings } = useSettings();
 
   useEffect(() => {
-    const companyName = settings?.companyName || 'NSS Home Designs';
+    const companyName = settings?.companyName || 'Neeli Home Designs';
     applySeo({
       title: `About Us — ${companyName}`,
       description: `Learn about ${companyName}, a Bengaluru-based interior design studio crafting premium residential and commercial spaces.`,
@@ -32,7 +32,7 @@ function About() {
           A young studio with a <span className="italic text-gold-gradient">timeless</span> point of view.
         </h1>
         <p className="mt-8 max-w-2xl text-lg text-muted-foreground">
-          NSS Home Designs is a Bengaluru-based residential and commercial design practice. We believe great interiors are quiet, considered and built to last — pairing modern luxury with the warmth of home.
+          Neeli Home Designs is a Bengaluru-based residential and commercial design practice. We believe great interiors are quiet, considered and built to last — pairing modern luxury with the warmth of home.
         </p>
       </section>
 

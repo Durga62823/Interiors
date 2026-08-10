@@ -15,7 +15,7 @@ function BlogPostPage() {
 
   useEffect(() => {
     if (!post) return
-    const companyName = settings?.companyName || 'NSS Home Designs'
+    const companyName = settings?.companyName || 'Neeli Home Designs'
     applySeo({
       title: post.metaTitle || `${post.title} — ${companyName}`,
       description: post.metaDescription || post.excerpt,
@@ -84,7 +84,7 @@ function BlogPostPage() {
         )}
 
         {/* Content */}
-        <div 
+        <div
           className="max-w-3xl mx-auto prose prose-neutral dark:prose-invert prose-headings:font-display prose-headings:font-normal prose-a:text-gold hover:prose-a:text-gold/80 prose-img:rounded-sm"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />

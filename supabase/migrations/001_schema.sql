@@ -1,5 +1,5 @@
 -- ============================================================
--- NSS Home Designs — Supabase Schema Migration
+-- Neeli Home Designs — Supabase Schema Migration
 -- Run this in your Supabase SQL Editor (Dashboard → SQL Editor)
 -- ============================================================
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS leads (
 -- =========================
 CREATE TABLE IF NOT EXISTS company_settings (
   id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
-  company_name TEXT NOT NULL DEFAULT 'NSS Home Designs',
+  company_name TEXT NOT NULL DEFAULT 'Neeli Home Designs',
   tagline TEXT NOT NULL DEFAULT 'Designing Dreams, Building Better Homes',
   phone TEXT NOT NULL DEFAULT '',
   whatsapp TEXT NOT NULL DEFAULT '',

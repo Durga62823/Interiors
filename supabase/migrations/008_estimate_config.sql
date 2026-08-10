@@ -1,5 +1,5 @@
 -- ============================================================
--- NSS Home Designs — Migration 008: Cost Estimator Config
+-- Neeli Home Designs — Migration 008: Cost Estimator Config
 -- Run this in: Supabase Dashboard → SQL Editor
 -- ============================================================
 

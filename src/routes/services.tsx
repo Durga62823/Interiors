@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
-import { ArrowRight, Armchair, ChefHat, Sofa, BedDouble, Briefcase, Building2, Layers, BookOpen, Wrench, Hammer, PencilRuler } from "lucide-react";
+import { ArrowRight, Armchair, ChefHat, Sofa, BedDouble, Briefcase, Building2, Layers, BookOpen, Wrench, Hammer, PencilRuler, RefreshCcw } from "lucide-react";
 import { useEffect } from "react";
 import { useServices } from "@/hooks/use-services";
 import { useSettings } from "@/hooks/use-settings";
@@ -12,16 +12,17 @@ export const Route = createFileRoute("/services")({
 
 // Static fallbacks — only shown when DB returns nothing
 const staticServices = [
-  { icon: Armchair, title: "Home Interiors", desc: "Turnkey residential design — from layout to last switch plate.", from: "₹3.5L" },
+  { icon: PencilRuler, title: "Interior Design", desc: "Considered residential interiors tailored to how you live.", from: "On request" },
   { icon: ChefHat, title: "Modular Kitchens", desc: "Ergonomic, durable kitchens with premium hardware and finishes.", from: "₹1.8L" },
+  { icon: BookOpen, title: "Wardrobes & Storage", desc: "Sliding, hinged and walk-in wardrobes built to your every inch.", from: "₹1,250/sqft" },
+  { icon: Building2, title: "Residential & Commercial", desc: "End-to-end design solutions for homes, offices and commercial spaces.", from: "On request" },
+  { icon: Layers, title: "Turnkey Solutions", desc: "Complete project delivery from design concept to final handover.", from: "On request" },
   { icon: Sofa, title: "Living Rooms", desc: "Statement living spaces designed around how you actually entertain.", from: "₹1.2L" },
   { icon: BedDouble, title: "Bedrooms", desc: "Restful master and guest suites with bespoke joinery.", from: "₹1.5L" },
   { icon: Briefcase, title: "Office Interiors", desc: "Workspaces that perform as well as they look.", from: "₹4.5L" },
-  { icon: Building2, title: "Commercial Spaces", desc: "Retail, hospitality and showroom interiors with brand presence.", from: "On request" },
-  { icon: Layers, title: "False Ceilings", desc: "Gypsum and POP ceilings with integrated lighting design.", from: "₹85/sqft" },
-  { icon: BookOpen, title: "Wardrobes", desc: "Sliding, hinged and walk-in wardrobes — built to your inch.", from: "₹1,250/sqft" },
   { icon: Wrench, title: "Renovations", desc: "End-to-end home and apartment refurbishments.", from: "On request" },
   { icon: Hammer, title: "Custom Furniture", desc: "Bespoke pieces designed and joined in our workshop.", from: "On request" },
+  { icon: RefreshCcw, title: "Design Reconstruction", desc: "Upload photos of your existing space. We tear it down conceptually and rebuild something extraordinary.", from: "On request" },
 ];
 
 function getCategoryIcon(category: string) {
@@ -113,23 +114,23 @@ function Services() {
   const { data: settings } = useSettings();
 
   useEffect(() => {
-    const companyName = settings?.companyName || 'NSS Home Designs';
+    const companyName = settings?.companyName || 'Neeli Home Designs';
     applySeo({
-      title: `Interior Design Services — ${companyName}`,
-      description: `Explore our full range of interior design services including modular kitchens, wardrobes, false ceilings and complete home interiors in Bengaluru.`,
-      ogTitle: `Our Services — ${companyName}`,
-      ogDescription: 'Premium interior design services for homes and offices in Bengaluru.',
+      title: `Interior Design Services — Neeli's Design Studio`,
+      description: `Explore our full range of interior design services including modular kitchens, wardrobes & storage, residential & commercial, and complete turnkey solutions in Hyderabad and Bengaluru.`,
+      ogTitle: `Our Services — Neeli's Design Studio`,
+      ogDescription: 'Premium interior design services for homes and offices in Hyderabad and Bengaluru.',
     });
   }, [settings]);
 
   // Use all DB services when available, otherwise static fallback
   const displayServices = dbServices && dbServices.length > 0
     ? dbServices.map((s: any) => ({
-        icon: getCategoryIcon(s.category || ''),
-        title: s.title,
-        desc: s.description,
-        from: s.price || 'On request',
-      }))
+      icon: getCategoryIcon(s.category || ''),
+      title: s.title,
+      desc: s.description,
+      from: s.price || 'On request',
+    }))
     : staticServices;
 
   return (
@@ -179,11 +180,10 @@ function Services() {
           {packages.map((pkg) => (
             <div
               key={pkg.name}
-              className={`relative flex flex-col rounded-sm border p-8 transition-shadow hover:shadow-lg ${
-                pkg.popular
+              className={`relative flex flex-col rounded-sm border p-8 transition-shadow hover:shadow-lg ${pkg.popular
                   ? 'border-gold bg-ink text-cream shadow-md'
                   : 'border-border bg-card'
-              }`}
+                }`}
             >
               {pkg.popular && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-sm bg-gold px-4 py-1 text-[10px] font-bold uppercase tracking-[0.3em] text-ink">
@@ -206,11 +206,10 @@ function Services() {
               <ul className="space-y-3 grow">
                 {pkg.features.map((feat) => (
                   <li key={feat.label} className="flex items-start gap-3 text-sm">
-                    <span className={`mt-0.5 shrink-0 text-sm font-bold ${
-                      feat.included
+                    <span className={`mt-0.5 shrink-0 text-sm font-bold ${feat.included
                         ? 'text-gold'
                         : pkg.popular ? 'text-cream/25' : 'text-muted-foreground/40'
-                    }`}>
+                      }`}>
                       {feat.included ? '✓' : '—'}
                     </span>
                     <span className={
@@ -226,16 +225,48 @@ function Services() {
 
               <Link
                 to="/contact"
-                className={`mt-8 inline-flex items-center justify-center gap-2 rounded-sm px-7 py-4 text-xs font-medium uppercase tracking-[0.25em] transition-colors ${
-                  pkg.popular
+                className={`mt-8 inline-flex items-center justify-center gap-2 rounded-sm px-7 py-4 text-xs font-medium uppercase tracking-[0.25em] transition-colors ${pkg.popular
                     ? 'bg-gold text-ink hover:bg-cream'
                     : 'border border-border bg-transparent hover:border-gold hover:text-gold'
-                }`}
+                  }`}
               >
                 Get a Quote <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── Design Reconstruction Spotlight ──────────────────────────────── */}
+      <section className="container-luxe pb-20">
+        <div className="relative overflow-hidden rounded-sm bg-ink p-10 text-cream md:p-16">
+          <div className="absolute inset-0 opacity-20 [background:radial-gradient(60%_70%_at_90%_50%,oklch(0.78_0.13_80/0.6),transparent_70%)]" />
+          <div className="relative grid items-center gap-10 md:grid-cols-[2fr_1fr]">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-gold mb-3">New Service</p>
+              <h2 className="font-display text-3xl leading-tight md:text-4xl">
+                Unhappy with your current space?<br />
+                <span className="italic text-gold">Let us reconstruct it.</span>
+              </h2>
+              <p className="mt-4 max-w-xl text-cream/70">
+                Upload photos of your existing rooms, tell us what you dislike, pick your dream style — and our designers will rebuild it conceptually from scratch with 3D renders before a single piece of furniture moves.
+              </p>
+              <ul className="mt-6 space-y-2 text-sm text-cream/60">
+                <li className="flex items-center gap-2"><span className="text-gold">✓</span> Photo-upload brief in 3 minutes</li>
+                <li className="flex items-center gap-2"><span className="text-gold">✓</span> Designer calls within 24 hours</li>
+                <li className="flex items-center gap-2"><span className="text-gold">✓</span> 3D render before any work begins</li>
+              </ul>
+            </div>
+            <div className="flex flex-col gap-3">
+              <Link
+                to="/redesign"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-gold px-7 py-4 text-xs font-medium uppercase tracking-[0.25em] text-ink hover:bg-cream transition-colors"
+              >
+                Start Redesign Brief <ArrowRight className="h-4 w-4" />
+              </Link>
+              <p className="text-center text-[10px] text-cream/40 uppercase tracking-wider">Free consultation · No commitment</p>
+            </div>
+          </div>
         </div>
       </section>
 

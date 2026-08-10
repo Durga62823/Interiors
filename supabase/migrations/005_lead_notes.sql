@@ -1,5 +1,5 @@
 -- ============================================================
--- NSS Home Designs — Migration 005: Lead Notes
+-- Neeli Home Designs — Migration 005: Lead Notes
 -- Run this in: Supabase Dashboard → SQL Editor
 -- ============================================================
 

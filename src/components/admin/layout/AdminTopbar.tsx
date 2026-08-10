@@ -23,20 +23,20 @@ export function AdminTopbar({ onToggleSidebar }: AdminTopbarProps) {
   const { user, logout } = useAuth();
 
   const userInitials = user?.name ? user.name.substring(0, 2).toUpperCase() : 'AD';
-  
+
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-card px-4 shadow-sm sm:px-6">
       <div className="flex items-center gap-4">
-        <Button 
-          variant="ghost" 
-          size="icon" 
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onToggleSidebar}
           className="text-muted-foreground hover:text-foreground"
         >
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle sidebar</span>
         </Button>
-        
+
         <div className="hidden sm:block">
           <AdminBreadcrumb />
         </div>
@@ -45,16 +45,16 @@ export function AdminTopbar({ onToggleSidebar }: AdminTopbarProps) {
       <div className="flex items-center gap-3 sm:gap-4">
         <div className="relative hidden md:block w-64">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input 
-            type="search" 
-            placeholder="Search..." 
+          <Input
+            type="search"
+            placeholder="Search..."
             className="w-full rounded-full bg-background pl-9 focus-visible:ring-[#d6b05e]"
           />
         </div>
 
-        <Button 
-          variant="ghost" 
-          size="icon" 
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={toggleTheme}
           className="text-muted-foreground hover:text-foreground rounded-full"
         >
@@ -84,7 +84,7 @@ export function AdminTopbar({ onToggleSidebar }: AdminTopbarProps) {
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">{user?.name || 'Administrator'}</p>
                 <p className="text-xs leading-none text-muted-foreground">
-                  {user?.email || 'admin@nsshomedesigns.in'}
+                  {user?.email || 'admin@Neelihomedesigns.in'}
                 </p>
               </div>
             </DropdownMenuLabel>

@@ -8,7 +8,7 @@ export function WhatsAppButton() {
   const whatsapp = settings?.whatsapp || '919800000000';
   // Strip non-digits for the wa.me link
   const waNumber = whatsapp.replace(/\D/g, '');
-  const waUrl = `https://wa.me/${waNumber}?text=Hi%20NSS%20Home%20Designs%2C%20I%27d%20like%20to%20discuss%20a%20project.`;
+  const waUrl = `https://wa.me/${waNumber}?text=Hi%20Neeli%20Home%20Designs%2C%20I%27d%20like%20to%20discuss%20a%20project.`;
 
   return (
     <a

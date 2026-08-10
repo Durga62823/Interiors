@@ -1,5 +1,5 @@
 -- ============================================================
--- NSS Home Designs — Migration 004: Google Maps Embed URL
+-- Neeli Home Designs — Migration 004: Google Maps Embed URL
 -- Run this in: Supabase Dashboard → SQL Editor
 -- ============================================================
 

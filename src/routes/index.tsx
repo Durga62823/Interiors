@@ -29,11 +29,11 @@ export const Route = createFileRoute("/")(
 // HeroLeadForm — inline lead capture embedded in the hero section
 // ---------------------------------------------------------------------------
 const heroServices = [
-  "Home Interiors",
-  "Modular Kitchen",
-  "Wardrobes",
-  "Office Interior",
-  "Renovation",
+  "Interior Design",
+  "Modular Kitchens",
+  "Wardrobes & Storage",
+  "Residential & Commercial",
+  "Turnkey Solutions",
   "Other",
 ];
 
@@ -131,8 +131,8 @@ function HeroLeadForm({ serviceOptions }: { serviceOptions: string[] }) {
 const staticServices = [
   { icon: PencilRuler, title: "Interior Design", desc: "Considered residential interiors tailored to how you live." },
   { icon: Hammer, title: "Modular Kitchens", desc: "Ergonomic, durable kitchens with premium hardware and finishes." },
-  { icon: Sparkles, title: "Modular Furniture", desc: "Wardrobes, storage and bespoke furniture built to your inch." },
-  { icon: Award, title: "Doors & Woodwork", desc: "Custom doors, panelling and joinery, master-crafted in our workshop." },
+  { icon: Sparkles, title: "Wardrobes & Storage", desc: "Sliding, hinged and walk-in wardrobes built to your every inch." },
+  { icon: Award, title: "Residential & Commercial", desc: "End-to-end design for homes, offices and commercial spaces." },
 ];
 
 const staticProjects = [
@@ -145,7 +145,7 @@ const staticProjects = [
 ];
 
 const staticTestimonials = [
-  { quote: "NSS Home Designs transformed our apartment into something we never imagined possible. Detail-obsessed in the best way.", name: "Ananya R.", where: "Homeowner" },
+  { quote: "Neeli Home Designs transformed our apartment into something we never imagined possible. Detail-obsessed in the best way.", name: "Ananya R.", where: "Homeowner" },
   { quote: "From the modular kitchen to the wardrobes — flawless craftsmanship and on-time delivery. Highly recommended.", name: "Rohit & Meera", where: "Homeowners" },
   { quote: "Our space finally reflects who we are. The team listened, designed and delivered beyond expectations.", name: "Vikram S.", where: "Client" },
 ];
@@ -183,11 +183,11 @@ function Home() {
   useEffect(() => {
     if (!settings) return;
     const seo = settings.seo || {};
-    const companyName = settings.companyName || 'NSS Home Designs';
+    const companyName = settings.companyName || 'Neeli Home Designs';
     const tagline = settings.tagline || 'Designing Dreams, Building Better Homes';
     applySeo({
       title: seo.metaTitle || `${companyName} — ${tagline}`,
-      description: seo.metaDescription || `${companyName}: Premium interior design, modular kitchens and custom furniture in Bengaluru.`,
+      description: seo.metaDescription || `${companyName}: Premium interior design, modular kitchens, wardrobes & turnkey solutions in Hyderabad and Bengaluru.`,
       ogTitle: seo.ogTitle || seo.metaTitle || companyName,
       ogDescription: seo.ogDescription || seo.metaDescription || tagline,
       ogImage: seo.ogImage || '',
@@ -237,14 +237,14 @@ function Home() {
       <section className="relative isolate min-h-[100svh] overflow-hidden bg-ink text-cream">
         <img
           src={heroImg}
-          alt="Interior crafted by NSS Home Designs"
+          alt="Interior crafted by Neeli Home Designs"
           width={1920}
           height={1280}
           className="absolute inset-0 h-full w-full object-cover opacity-70"
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,oklch(0.08_0.01_60/0.55)_0%,oklch(0.08_0.01_60/0.4)_40%,oklch(0.08_0.01_60/0.9)_100%)]" />
         <div className="relative z-10 container-luxe flex min-h-svh flex-col justify-end pb-16 pt-32 md:pb-24 md:pt-40">
-          <p className="text-[11px] uppercase tracking-[0.4em] text-gold">NSS Home Designs · Interiors & Woodwork</p>
+          <p className="text-[11px] uppercase tracking-[0.4em] text-gold">Neeli's Design Studio · Designing Spaces, Inspiring Lives</p>
           <h1 className="mt-6 max-w-4xl font-display text-5xl leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl">
             Designing dreams, <span className="italic text-gold-gradient">building better homes</span>.
           </h1>
@@ -253,11 +253,11 @@ function Home() {
           </p>
 
           {/* Inline lead form — replaces the two navigation buttons */}
-          <HeroLeadForm serviceOptions={
+          {/* <HeroLeadForm serviceOptions={
             displayServices.length > 0
               ? displayServices.map((s) => s.title)
               : heroServices
-          } />
+          } /> */}
 
           {/* Secondary actions below the form */}
           <div className="mt-4 flex items-center gap-6">
@@ -277,6 +277,25 @@ function Home() {
         </div>
       </section>
 
+      {/* TRUST BADGES */}
+      <section className="border-y border-border bg-background">
+        <div className="container-luxe py-10">
+          <p className="text-center text-[10px] uppercase tracking-[0.4em] text-gold mb-6">We Design</p>
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {[
+              { icon: "✦", label: "Creative Designs" },
+              { icon: "◈", label: "Customized Solutions" },
+              { icon: "✓", label: "Quality Assured" },
+              { icon: "◷", label: "On Time Delivery" },
+            ].map((b) => (
+              <div key={b.label} className="flex flex-col items-center gap-3 text-center">
+                <span className="grid h-12 w-12 place-items-center rounded-full border border-gold/40 bg-gold/10 text-xl text-gold">{b.icon}</span>
+                <span className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground">{b.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       {/* TRUST METRICS */}
       <section className="border-y border-border bg-background">
         <div className="container-luxe grid grid-cols-2 gap-y-10 py-12 md:grid-cols-4 md:py-16">
@@ -365,7 +384,7 @@ function Home() {
             <div className="absolute -bottom-6 -right-6 hidden h-40 w-40 border border-gold md:block" />
           </div>
           <div>
-            <p className="text-[11px] uppercase tracking-[0.4em] text-gold">Why NSS Home Designs</p>
+            <p className="text-[11px] uppercase tracking-[0.4em] text-gold">Why Neeli's Design Studio</p>
             <h2 className="mt-4 font-display text-4xl leading-tight md:text-5xl">
               Considered design. Quiet luxury. Real craft.
             </h2>
@@ -449,7 +468,7 @@ function Home() {
               <Link to="/contact" className="inline-flex items-center justify-center gap-2 rounded-sm bg-gold px-7 py-4 text-xs font-medium uppercase tracking-[0.25em] text-ink hover:bg-cream">
                 Book Consultation <ArrowRight className="h-4 w-4" />
               </Link>
-              <a href="https://wa.me/919800000000" className="inline-flex items-center justify-center gap-2 rounded-sm border border-cream/30 px-7 py-4 text-xs font-medium uppercase tracking-[0.25em] hover:border-gold hover:text-gold">
+              <a href="https://wa.me/919652634477" className="inline-flex items-center justify-center gap-2 rounded-sm border border-cream/30 px-7 py-4 text-xs font-medium uppercase tracking-[0.25em] hover:border-gold hover:text-gold">
                 Chat on WhatsApp
               </a>
             </div>

@@ -66,7 +66,7 @@ function EstimatePage() {
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
-    const companyName = settings?.companyName || 'NSS Home Designs'
+    const companyName = settings?.companyName || 'Neeli Home Designs'
     applySeo({
       title: `Free Interior Design Cost Estimate — ${companyName}`,
       description: `Get an instant cost estimate for your home interior design project in Bengaluru. Select rooms, choose your quality tier, and see pricing in 60 seconds.`,
@@ -176,13 +176,11 @@ function EstimatePage() {
             <div key={label} className="flex items-center gap-2 flex-1">
               <button
                 onClick={() => { if (i < step) setStep(i) }}
-                className={`flex items-center gap-2 text-xs font-medium uppercase tracking-wider transition-colors ${
-                  i <= step ? 'text-gold' : 'text-muted-foreground/40'
-                } ${i < step ? 'cursor-pointer hover:text-gold/80' : 'cursor-default'}`}
+                className={`flex items-center gap-2 text-xs font-medium uppercase tracking-wider transition-colors ${i <= step ? 'text-gold' : 'text-muted-foreground/40'
+                  } ${i < step ? 'cursor-pointer hover:text-gold/80' : 'cursor-default'}`}
               >
-                <span className={`grid h-7 w-7 place-items-center rounded-full text-[11px] font-bold transition-colors ${
-                  i < step ? 'bg-gold text-ink' : i === step ? 'border-2 border-gold text-gold' : 'border border-muted-foreground/30 text-muted-foreground/40'
-                }`}>
+                <span className={`grid h-7 w-7 place-items-center rounded-full text-[11px] font-bold transition-colors ${i < step ? 'bg-gold text-ink' : i === step ? 'border-2 border-gold text-gold' : 'border border-muted-foreground/30 text-muted-foreground/40'
+                  }`}>
                   {i < step ? <Check className="h-3.5 w-3.5" /> : i + 1}
                 </span>
                 <span className="hidden sm:inline">{label}</span>
@@ -210,9 +208,8 @@ function EstimatePage() {
                     <button
                       key={pt.id}
                       onClick={() => handlePropertySelect(pt.id)}
-                      className={`group flex flex-col items-center gap-3 rounded-sm border p-6 transition-all hover:border-gold hover:shadow-md ${
-                        propertyType === pt.id ? 'border-gold bg-gold/5 shadow-md' : 'border-border bg-card'
-                      }`}
+                      className={`group flex flex-col items-center gap-3 rounded-sm border p-6 transition-all hover:border-gold hover:shadow-md ${propertyType === pt.id ? 'border-gold bg-gold/5 shadow-md' : 'border-border bg-card'
+                        }`}
                     >
                       <pt.icon className={`h-8 w-8 ${propertyType === pt.id ? 'text-gold' : 'text-muted-foreground group-hover:text-gold'}`} strokeWidth={1.25} />
                       <span className="font-display text-lg">{pt.label}</span>
@@ -235,11 +232,10 @@ function EstimatePage() {
                       <button
                         key={room}
                         onClick={() => toggleRoom(room)}
-                        className={`flex items-center gap-3 rounded-sm border p-4 text-left transition-all ${
-                          selected
+                        className={`flex items-center gap-3 rounded-sm border p-4 text-left transition-all ${selected
                             ? 'border-gold bg-gold/5 shadow-sm'
                             : 'border-border bg-card hover:border-gold/50'
-                        }`}
+                          }`}
                       >
                         <Icon className={`h-5 w-5 shrink-0 ${selected ? 'text-gold' : 'text-muted-foreground'}`} strokeWidth={1.5} />
                         <span className="text-sm font-medium">{room}</span>
@@ -298,11 +294,10 @@ function EstimatePage() {
                     <button
                       key={t.id}
                       onClick={() => setTier(t.id)}
-                      className={`relative flex flex-col rounded-sm border-2 p-6 text-left transition-all ${
-                        tier === t.id
+                      className={`relative flex flex-col rounded-sm border-2 p-6 text-left transition-all ${tier === t.id
                           ? 'border-gold bg-gold/5 shadow-md'
                           : `${t.color} bg-card hover:border-gold/50`
-                      }`}
+                        }`}
                     >
                       {t.id === 'premium' && (
                         <span className="absolute -top-2.5 right-4 rounded-sm bg-gold px-3 py-0.5 text-[9px] font-bold uppercase tracking-widest text-ink">

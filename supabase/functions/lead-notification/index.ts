@@ -46,7 +46,7 @@ serve(async (req: Request) => {
     console.log("SUPABASE_URL exists:", !!supabaseUrl);
     console.log("SERVICE_ROLE_KEY exists:", !!supabaseServiceKey);
     const notificationEmail = settings?.notification_email
-    const companyName = settings?.company_name || "NSS Home Designs"
+    const companyName = settings?.company_name || "Neeli Home Designs"
 
     if (!notificationEmail) {
       console.log("No notification email configured. Skipping.")

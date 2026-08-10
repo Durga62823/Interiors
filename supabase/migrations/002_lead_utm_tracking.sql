@@ -1,5 +1,5 @@
 -- ============================================================
--- NSS Home Designs — Migration 002: Lead UTM Tracking
+-- Neeli Home Designs — Migration 002: Lead UTM Tracking
 -- Run this in: Supabase Dashboard → SQL Editor
 -- ============================================================
 
