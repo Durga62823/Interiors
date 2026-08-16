@@ -4,7 +4,8 @@ import { createLead } from "@/mock-api/leads";
 import { getStoredUTM } from "@/lib/utm";
 import { toast } from "sonner";
 
-const POPUP_DELAY_MS = 10 * 1000; // 2 minutes
+const POPUP_DELAY_MS = 10 * 1000; // 10 seconds
+const STORAGE_KEY = "consultation_popup_submitted";
 
 const SERVICES = [
   "Interior Design",
@@ -29,6 +30,10 @@ export function ConsultationPopup() {
   };
 
   useEffect(() => {
+    // Never show again if the user already submitted
+    const alreadySubmitted = localStorage.getItem(STORAGE_KEY) === "true";
+    if (alreadySubmitted) return;
+
     scheduleNext();
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -37,8 +42,8 @@ export function ConsultationPopup() {
 
   const dismiss = () => {
     setVisible(false);
-    // Re-schedule if the user hasn't submitted
-    if (!submitted) {
+    // Re-schedule only if the user hasn't submitted yet
+    if (!submitted && localStorage.getItem(STORAGE_KEY) !== "true") {
       scheduleNext();
     }
   };
@@ -59,6 +64,8 @@ export function ConsultationPopup() {
         status: "new",
         ...getStoredUTM(),
       });
+      // Persist so popup never shows again, even after page reload
+      localStorage.setItem(STORAGE_KEY, "true");
       setSubmitted(true);
       toast.success("We'll be in touch soon!");
       // Hide after 3s on success and never re-show
